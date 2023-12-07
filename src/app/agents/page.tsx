@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Layout } from "~/app/_components/Layout";
 import { CircleDashed } from "lucide-react";
 import logoAirbnb from "~/images/logos/airbnb.svg";

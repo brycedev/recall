@@ -17,6 +17,13 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
+    RECALL_API_KEY: z.string(),
+    ZOOM_ACCOUNT_ID: z.string(),
+    ZOOM_CLIENT_ID: z.string(),
+    ZOOM_CLIENT_SECRET: z.string(),
+    R2_ACCESS_KEY_ID: z.string(),
+    R2_SECRET_ACCESS_KEY: z.string(),
+    R2_ENDPOINT: z.string(),
   },
 
   /**
@@ -25,7 +32,7 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_R2_DOMAIN: z.string(),
   },
 
   /**
@@ -35,7 +42,14 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+    RECALL_API_KEY: process.env.RECALL_API_KEY,
+    ZOOM_ACCOUNT_ID: process.env.ZOOM_ACCOUNT_ID,
+    ZOOM_CLIENT_ID: process.env.ZOOM_CLIENT_ID,
+    ZOOM_CLIENT_SECRET: process.env.ZOOM_CLIENT_SECRET,
+    R2_ACCESS_KEY_ID: process.env.R2_ACCESS_KEY_ID,
+    R2_SECRET_ACCESS_KEY: process.env.R2_SECRET_ACCESS_KEY,
+    R2_ENDPOINT: process.env.R2_ENDPOINT,
+    NEXT_PUBLIC_R2_DOMAIN: process.env.NEXT_PUBLIC_R2_DOMAIN,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

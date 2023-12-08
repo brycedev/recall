@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Popover, Transition } from "@headlessui/react";
@@ -98,10 +98,10 @@ function MobileNavigation(
             </div>
             <nav className="mt-6">
               <ul className="-my-2 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
-                <MobileNavItem href="/">Dashboard</MobileNavItem>
-                <MobileNavItem href="/agents">Agents</MobileNavItem>
                 <MobileNavItem href="/meetings">Meetings</MobileNavItem>
+                <MobileNavItem href="/agents">Agents</MobileNavItem>
                 <MobileNavItem href="/usage">Usage</MobileNavItem>
+                <MobileNavItem href="/settings">Settings</MobileNavItem>
               </ul>
             </nav>
           </Popover.Panel>
@@ -127,8 +127,8 @@ function NavItem({
         className={clsx(
           "relative block px-3 py-2 transition",
           isActive
-            ? "text-teal-500 dark:text-teal-400"
-            : "hover:text-teal-500 dark:hover:text-teal-400",
+            ? "text-teal-500 dark:text-teal-500"
+            : "hover:text-teal-500 dark:hover:text-teal-500",
         )}
       >
         {children}
@@ -144,139 +144,21 @@ function DesktopNavigation(props: React.ComponentPropsWithoutRef<"nav">) {
   return (
     <nav {...props}>
       <ul className="flex rounded-full px-3 text-sm text-zinc-300 shadow-lg shadow-zinc-800/5 ring-1 ring-white/10 backdrop-blur">
-        <NavItem href="/">Dashboard</NavItem>
-        <NavItem href="/agents">Agents</NavItem>
         <NavItem href="/meetings">Meetings</NavItem>
+        <NavItem href="/agents">Agents</NavItem>
         <NavItem href="/usage">Usage</NavItem>
+        <NavItem href="/settings">Settings</NavItem>
       </ul>
     </nav>
   );
 }
 
-function clamp(number: number, a: number, b: number) {
-  const min = Math.min(a, b);
-  const max = Math.max(a, b);
-  return Math.min(Math.max(number, min), max);
-}
-
 export function Header() {
-  const isHomePage = usePathname() === "/";
-
-  const headerRef = useRef<React.ElementRef<"div">>(null);
-  const avatarRef = useRef<React.ElementRef<"div">>(null);
-  const isInitial = useRef(true);
-
-  useEffect(() => {
-    const downDelay = avatarRef.current?.offsetTop ?? 0;
-    const upDelay = 64;
-
-    function setProperty(property: string, value: string) {
-      document.documentElement.style.setProperty(property, value);
-    }
-
-    function removeProperty(property: string) {
-      document.documentElement.style.removeProperty(property);
-    }
-
-    function updateHeaderStyles() {
-      if (!headerRef.current) {
-        return;
-      }
-
-      const { top, height } = headerRef.current.getBoundingClientRect();
-      const scrollY = clamp(
-        window.scrollY,
-        0,
-        document.body.scrollHeight - window.innerHeight,
-      );
-
-      if (isInitial.current) {
-        setProperty("--header-position", "sticky");
-      }
-
-      setProperty("--content-offset", `${downDelay}px`);
-
-      if (isInitial.current || scrollY < downDelay) {
-        setProperty("--header-height", `${downDelay + height}px`);
-        setProperty("--header-mb", `${-downDelay}px`);
-      } else if (top + height < -upDelay) {
-        const offset = Math.max(height, scrollY - upDelay);
-        setProperty("--header-height", `${offset}px`);
-        setProperty("--header-mb", `${height - offset}px`);
-      } else if (top === 0) {
-        setProperty("--header-height", `${scrollY + height}px`);
-        setProperty("--header-mb", `${-scrollY}px`);
-      }
-
-      if (top === 0 && scrollY > 0 && scrollY >= downDelay) {
-        setProperty("--header-inner-position", "fixed");
-        removeProperty("--header-top");
-        removeProperty("--avatar-top");
-      } else {
-        removeProperty("--header-inner-position");
-        setProperty("--header-top", "0px");
-        setProperty("--avatar-top", "0px");
-      }
-    }
-
-    function updateAvatarStyles() {
-      if (!isHomePage) {
-        return;
-      }
-
-      const fromScale = 1;
-      const toScale = 36 / 64;
-      const fromX = 0;
-      const toX = 2 / 16;
-
-      const scrollY = downDelay - window.scrollY;
-
-      let scale = (scrollY * (fromScale - toScale)) / downDelay + toScale;
-      scale = clamp(scale, fromScale, toScale);
-
-      let x = (scrollY * (fromX - toX)) / downDelay + toX;
-      x = clamp(x, fromX, toX);
-
-      setProperty(
-        "--avatar-image-transform",
-        `translate3d(${x}rem, 0, 0) scale(${scale})`,
-      );
-
-      const borderScale = 1 / (toScale / scale);
-      const borderX = (-toX + x) * borderScale;
-      const borderTransform = `translate3d(${borderX}rem, 0, 0) scale(${borderScale})`;
-
-      setProperty("--avatar-border-transform", borderTransform);
-      setProperty("--avatar-border-opacity", scale === toScale ? "1" : "0");
-    }
-
-    function updateStyles() {
-      updateHeaderStyles();
-      updateAvatarStyles();
-      isInitial.current = false;
-    }
-
-    updateStyles();
-    window.addEventListener("scroll", updateStyles, { passive: true });
-    window.addEventListener("resize", updateStyles);
-
-    return () => {
-      window.removeEventListener("scroll", updateStyles);
-      window.removeEventListener("resize", updateStyles);
-    };
-  }, [isHomePage]);
-
   return (
     <>
-      <header className="pointer-events-none relative z-50 flex flex-none flex-col">
-        <div ref={headerRef} className="sticky top-0 z-10 py-4">
-          <Container
-            className="top-[var(--header-top,theme(spacing.6))] w-full"
-            style={{
-              position:
-                "var(--header-inner-position)" as React.CSSProperties["position"],
-            }}
-          >
+      <header className="pointer-events-none sticky top-0 z-50 flex flex-none flex-col bg-zinc-950/70 ring-1 ring-white/10 backdrop-blur">
+        <div className="py-4">
+          <Container className=" w-full">
             <div className="relative flex gap-4">
               <div className="flex flex-1 items-center">
                 <Logo className="h-6 w-auto"></Logo>

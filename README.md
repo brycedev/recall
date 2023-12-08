@@ -13,11 +13,9 @@
 
 
 <p align="center">
-<a href="https://discord.gg/uRFE3QEmXe">
-<img alt="Commit activity per month" src="https://img.shields.io/github/commit-activity/m/brycedev/recall?label=Commits&style=for-the-badge&color=84bed2" />
-<img alt="Discord online members" src="https://img.shields.io/discord/1150900319560155227?color=84bed2&label=Discord&style=for-the-badge" />
-</a>
-<img alt="GitHub" src="https://img.shields.io/github/license/brycedev/recall?style=for-the-badge&color=84bed2">
+<img alt="Commit activity per month" src="https://img.shields.io/github/commit-activity/m/brycedev/recall?label=Commits&style=for-the-badge&color=166CF9" />
+<img alt="Discord online members" src="https://img.shields.io/discord/1150900319560155227?color=166CF9&label=Discord&style=for-the-badge" />
+<img alt="GitHub" src="https://img.shields.io/github/license/brycedev/recall?style=for-the-badge&color=166CF9">
 
 </p>
 
